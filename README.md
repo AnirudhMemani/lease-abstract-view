@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lease Abstract Tab
+
+A Next.js application that provides commercial real estate investors with a comprehensive view of lease information for property deals.
+
+## Project Overview
+
+This application displays a lease abstract view that allows investors to quickly understand the structure and terms of tenant leases when evaluating potential real estate investments.
+
+## Features
+
+- **Comprehensive Lease Information**: View all critical lease details in a well-organized interface
+- **Risk Highlighting**: Visual indicators for time-sensitive information like upcoming lease expirations
+- **Interactive Elements**: Collapsible sections for detailed information
+- **Data Visualization**: Charts showing projected rent escalation
+- **External Data Integration**: Links to tenant information and original documentation
+- **PDF Export**: Generate and download lease summaries as PDF documents
+- **Responsive Design**: Works across desktop and mobile devices
+
+## Technical Implementation
+
+- Built with Next.js and TypeScript
+- Styled with Tailwind CSS
+- Interactive components with Framer Motion animations
+- PDF generation using html2canvas and jsPDF
+- Modular component architecture for maintainability
+
+## Design Decisions
+
+The interface was designed with a focus on information hierarchy, allowing investors to quickly scan for critical information while providing access to detailed data when needed. The layout uses visual cues like typography scaling, color contrast, and spacing to guide users through complex lease information.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open http://localhost:3000 with your browser to see the result.
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+To learn more about the technologies used in this project:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js Documentation
+- TypeScript Documentation
+- Tailwind CSS Documentation
