@@ -5,16 +5,34 @@ import * as React from "react";
 interface CustomCollapsibleProps {
   title: string;
   children: React.ReactNode;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export const CustomCollapsible = ({ title, children }: CustomCollapsibleProps) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+export const CustomCollapsible = ({
+  title,
+  children,
+  isOpen: externalIsOpen,
+  onOpenChange,
+}: CustomCollapsibleProps) => {
+  const [internalIsOpen, setInternalIsOpen] = React.useState(false);
+
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+
+  const handleToggle = () => {
+    const newState = !isOpen;
+    if (onOpenChange) {
+      onOpenChange(newState);
+    } else {
+      setInternalIsOpen(newState);
+    }
+  };
 
   return (
     <div>
       <button
         type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={handleToggle}
         className="flex w-full items-center justify-between cursor-pointer"
         aria-expanded={isOpen}
       >

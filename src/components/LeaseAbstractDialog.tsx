@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import html2canvasPro from "html2canvas-pro";
 import { jsPDF } from "jspdf";
 import { Download, ExternalLink, Info, XIcon } from "lucide-react";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CustomCollapsible } from "./custom-ui/CustomCollapsible";
 import { CustomDialog, CustomDialogHeader, CustomDialogTitle } from "./custom-ui/CustomDialog";
 import { RentEscalationChart } from "./RentEscalationChart";
@@ -99,26 +99,33 @@ export const LeaseAbstractDialog = ({ open, onOpenChange }: LeaseAbstractDialogP
   const daysUntilExpiry = Math.floor((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
   const isExpiringWithinYear = daysUntilExpiry <= 365;
 
+  const [isRecoveriesOpen, setIsRecoveriesOpen] = useState(false);
+  const [isRenewalOptionsOpen, setIsRenewalOptionsOpen] = useState(false);
+  const [isMaintenanceOpen, setIsMaintenanceOpen] = useState(false);
+
   const exportToPDF = async () => {
     if (!contentRef.current) return;
 
+    const originalStates = {
+      recoveries: isRecoveriesOpen,
+      renewal: isRenewalOptionsOpen,
+      maintenance: isMaintenanceOpen,
+    };
+
+    setIsRecoveriesOpen(() => true);
+    setIsRenewalOptionsOpen(() => true);
+    setIsMaintenanceOpen(() => true);
+
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
     try {
+      await new Promise((resolve) => setTimeout(resolve, 150));
+
       const originalPadding = contentRef.current.style.padding;
       contentRef.current.style.padding = "20px";
 
       const canvas = await html2canvasPro(contentRef.current, {
-        scale: 2,
-        logging: false,
         useCORS: true,
-        backgroundColor: "#ffffff",
-        width: contentRef.current.offsetWidth,
-        height: contentRef.current.scrollHeight,
-        windowWidth: contentRef.current.scrollWidth,
-        windowHeight: contentRef.current.scrollHeight,
-        x: 0,
-        y: 0,
-        scrollX: 0,
-        scrollY: 0,
       });
 
       contentRef.current.style.padding = originalPadding;
@@ -161,6 +168,10 @@ export const LeaseAbstractDialog = ({ open, onOpenChange }: LeaseAbstractDialogP
       pdf.save("lease-abstract-amazon.pdf");
     } catch (error) {
       console.error("Error generating PDF:", error);
+    } finally {
+      setIsRecoveriesOpen(originalStates.recoveries);
+      setIsRenewalOptionsOpen(originalStates.renewal);
+      setIsMaintenanceOpen(originalStates.maintenance);
     }
   };
 
@@ -288,7 +299,11 @@ export const LeaseAbstractDialog = ({ open, onOpenChange }: LeaseAbstractDialogP
               </div>
             </div>
             <Separator />
-            <CustomCollapsible title="Operating Expense Recoveries">
+            <CustomCollapsible
+              title="Operating Expense Recoveries"
+              isOpen={isRecoveriesOpen}
+              onOpenChange={setIsRecoveriesOpen}
+            >
               <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
                 <div>
                   <p className="text-sm text-gray-500">CAM</p>
@@ -309,7 +324,11 @@ export const LeaseAbstractDialog = ({ open, onOpenChange }: LeaseAbstractDialogP
               </div>
             </CustomCollapsible>
             <Separator />
-            <CustomCollapsible title="Renewal Options">
+            <CustomCollapsible
+              title="Renewal Options"
+              isOpen={isRenewalOptionsOpen}
+              onOpenChange={setIsRenewalOptionsOpen}
+            >
               {leaseData.renewalOptions.map((option, index) => (
                 <div key={index} className="mb-4">
                   <p className="font-semibold text-lg">Option {index + 1}</p>
@@ -331,7 +350,11 @@ export const LeaseAbstractDialog = ({ open, onOpenChange }: LeaseAbstractDialogP
               ))}
             </CustomCollapsible>
             <Separator />
-            <CustomCollapsible title="Maintenance Responsibilities">
+            <CustomCollapsible
+              title="Maintenance Responsibilities"
+              isOpen={isMaintenanceOpen}
+              onOpenChange={setIsMaintenanceOpen}
+            >
               <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
                 <div>
                   <p className="font-medium">Tenant Responsibilities</p>
